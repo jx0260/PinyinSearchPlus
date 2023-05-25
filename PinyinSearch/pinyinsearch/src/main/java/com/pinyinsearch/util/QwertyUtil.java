@@ -100,11 +100,14 @@ public class QwertyUtil {
 
 		PinyinBaseUnit pinyinBaseUnit = pyUnit.getPinyinBaseUnitIndex().get(qwertyPinyinUnitIndex);
 
+		String tmpMatchStr = "";
+
 		if (pyUnit.isPinyin()) {
 
 			if (search.startsWith(String.valueOf(pinyinBaseUnit.getPinyin().charAt(0)))) {// match pinyin first character
 				searchBuffer.delete(0, 1);// delete the match character
-				matchKeyword.append(baseData.charAt(pyUnit.getStartPosition()));
+				tmpMatchStr = String.valueOf(Character.toChars(baseData.codePointAt(pyUnit.getStartPosition())));
+				matchKeyword.append(tmpMatchStr);
 				boolean found = findPinyinUnits(pinyinUnits,pinyinUnitIndex + 1, 0, baseData, searchBuffer,matchKeyword);
 				if (true == found) {
 					return true;
@@ -117,14 +120,16 @@ public class QwertyUtil {
 
 			if (pinyinBaseUnit.getPinyin().startsWith(search)) {
 				// The string of "search" is the string of pinyinBaseUnit.getPinyin() of a subset. means match success.
-				matchKeyword.append(baseData.charAt(pyUnit.getStartPosition()));
+				tmpMatchStr = String.valueOf(Character.toChars(baseData.codePointAt(pyUnit.getStartPosition())));
+				matchKeyword.append(tmpMatchStr);
 				searchBuffer.delete(0, searchBuffer.length());
 				return true;
 
 			} else if (search.startsWith(pinyinBaseUnit.getPinyin())) { // match quanpin success
 				// The string of pinyinBaseUnit.getPinyin() is the string of "search" of a subset.
 				searchBuffer.delete(0, pinyinBaseUnit.getPinyin().length());
-				matchKeyword.append(baseData.charAt(pyUnit.getStartPosition()));
+				tmpMatchStr = String.valueOf(Character.toChars(baseData.codePointAt(pyUnit.getStartPosition())));
+				matchKeyword.append(tmpMatchStr);
 				boolean found = findPinyinUnits(pinyinUnits,pinyinUnitIndex+1, 0, baseData, searchBuffer,matchKeyword);
 				if (true == found) {
 					return true;

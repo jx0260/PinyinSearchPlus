@@ -16,7 +16,9 @@
 
 package com.pinyinsearch.util;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -27,6 +29,14 @@ import com.pinyinsearch.model.PinyinUnit;
 import com.pinyinsearch.model.PinyinBaseUnit;
 
 public class PinyinUtil {
+
+	private static Map<String, String> mStrToPinYinMap = new HashMap<>(280);
+
+	static {
+		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("20164", 16))), "xi"); // 𠅤
+		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("20676", 16))), "ou"); // 𠙶
+	}
+
 	// init Pinyin Output Format
 	private static HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
 
@@ -48,7 +58,7 @@ public class PinyinUtil {
 
 		format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
 
-		int chineseStringLength = chineseStr.length();
+		int cpNum = chineseStr.codePointCount(0, chineseStr.length());
 		StringBuffer nonPinyinString = new StringBuffer();
 		PinyinUnit pyUnit = null;
 		String originalString = null;
@@ -56,23 +66,32 @@ public class PinyinUtil {
 		boolean lastChineseCharacters = true;
 		int startPosition = -1;
 
-		for (int i = 0; i < chineseStringLength; i++) {
-			char ch = chineseStr.charAt(i);
-			try {
-				pinyinStr = PinyinHelper.toHanyuPinyinStringArray(ch, format);
-			} catch (BadHanyuPinyinOutputFormatCombination e) {
-
-				e.printStackTrace();
+		for (int i = 0; i < cpNum; i++) {
+			int codepointIndex = chineseStr.offsetByCodePoints(0, i);
+			int codepoint = chineseStr.codePointAt(i);
+			char[] chars = Character.toChars(codepoint);
+			String letter = String.valueOf(chars);
+			if (mStrToPinYinMap.get(letter) != null) { // 生僻字
+				pinyinStr = new String[]{mStrToPinYinMap.get(letter)};
+				originalString = letter;
+			} else {
+				char ch = chineseStr.charAt(codepointIndex);
+				originalString = String.valueOf(ch);
+				try {
+					pinyinStr = PinyinHelper.toHanyuPinyinStringArray(ch, format);
+				} catch (BadHanyuPinyinOutputFormatCombination e) {
+					e.printStackTrace();
+				}
 			}
 
 			if (null == pinyinStr) {
 				if (true == lastChineseCharacters) {
 					pyUnit = new PinyinUnit();
 					lastChineseCharacters = false;
-					startPosition = i;
+					startPosition = codepointIndex;
 					nonPinyinString.delete(0, nonPinyinString.length());
 				}
-				nonPinyinString.append(ch);
+				nonPinyinString.append(originalString);
 			} else {
 				if (false == lastChineseCharacters) {
 					// add continuous non-ChineseCharacter characters to PinyinUnit
@@ -85,10 +104,8 @@ public class PinyinUtil {
 				// add single Chinese characters Pinyin(include Multiple Pinyin)
 				// to PinyinUnit
 				pyUnit = new PinyinUnit();
-				startPosition = i;
-				originalString = String.valueOf(ch);
+				startPosition = codepointIndex;
 				addPinyinUnit(pinyinSearchUnit.getPinyinUnits(), pyUnit, true, originalString,pinyinStr, startPosition);
-
 			}
 		}
 
