@@ -52,7 +52,7 @@ public class PinyinUtil {
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("26221", 16))), "xu");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("2648d", 16))), "tong");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("26676", 16))), "gu");
-		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("2677c", 16))), "lu");
+		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("2677c", 16))), "lv");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("26b5c", 16))), "zhi");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("26c21", 16))), "na");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("27ff9", 16))), "mu");
@@ -288,7 +288,7 @@ public class PinyinUtil {
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("9fe6", 16))), "ying");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("9fe7", 16))), "long");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("9fe8", 16))), "lei");
-		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("9fe9", 16))), "lv");
+		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("9fe9", 16))), "lu");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("9fea", 16))), "sui");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("9feb", 16))), "ao");
 		mStrToPinYinMap.put(String.valueOf(Character.toChars(Integer.parseInt("9fec", 16))), "tian");
