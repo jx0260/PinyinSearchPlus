@@ -328,7 +328,7 @@ public class PinyinUtil {
 
 		for (int i = 0; i < cpNum; i++) {
 			int codepointIndex = chineseStr.offsetByCodePoints(0, i);
-			int codepoint = chineseStr.codePointAt(i);
+			int codepoint = chineseStr.codePointAt(codepointIndex);
 			char[] chars = Character.toChars(codepoint);
 			String letter = String.valueOf(chars);
 			if (mStrToPinYinMap.get(letter) != null) { // 生僻字
