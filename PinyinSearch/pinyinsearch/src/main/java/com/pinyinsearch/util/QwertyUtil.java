@@ -113,7 +113,8 @@ public class QwertyUtil {
 					return true;
 				} else {
 					searchBuffer.insert(0, pinyinBaseUnit.getPinyin().charAt(0));
-					matchKeyword.deleteCharAt(matchKeyword.length() - 1);
+					int toDel = tmpMatchStr.toCharArray().length;
+					matchKeyword.delete(matchKeyword.length() - toDel, matchKeyword.length());
 				}
 
 			}
@@ -135,7 +136,8 @@ public class QwertyUtil {
 					return true;
 				} else {
 					searchBuffer.insert(0, pinyinBaseUnit.getPinyin());
-					matchKeyword.deleteCharAt(matchKeyword.length()-1);
+					int toDel = tmpMatchStr.toCharArray().length;
+					matchKeyword.delete(matchKeyword.length() - toDel, matchKeyword.length());
 				}
 			} else { // mismatch
 				boolean found = findPinyinUnits(pinyinUnits, pinyinUnitIndex,qwertyPinyinUnitIndex+1, baseData, searchBuffer,matchKeyword);
